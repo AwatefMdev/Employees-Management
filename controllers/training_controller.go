@@ -9,9 +9,9 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/rymccue/golang-standard-lib-rest-api/repositories"
-	"github.com/rymccue/golang-standard-lib-rest-api/requests"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/caching"
+	"github.com/AwatefMdev/graduation_project/repositories"
+	"github.com/AwatefMdev/graduation_project/requests"
+	"github.com/AwatefMdev/graduation_project/utils/caching"
 )
 
 type JobController struct {
