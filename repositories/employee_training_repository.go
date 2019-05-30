@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/rymccue/golang-standard-lib-rest-api/models"
+	"github.com/AwatefMdev/graduation_project/models"
 )
 
 func CreateJob(db *sql.DB, title, description string, userID int) (int, error) {
