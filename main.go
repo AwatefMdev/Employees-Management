@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/rymccue/golang-standard-lib-rest-api/controllers"
-	"github.com/rymccue/golang-standard-lib-rest-api/routes"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/caching"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/database"
+	"github.com/AwatefMdev/graduation_project/controllers"
+	"github.com/AwatefMdev/graduation_project/routes"
+	"github.com/AwatefMdev/graduation_project/utils/caching"
+	"github.com/rymccue/AwatefMdev/graduation_project/utils/database"
 )
 
 func main() {
@@ -20,11 +20,19 @@ func main() {
 		Client: caching.Connect(os.Getenv("REDIS_ADDR"), os.Getenv("REDIS_PASSWORD"), 0),
 	}
 
-	userController := controllers.NewUserController(db, cache)
-	jobController := controllers.NewJobController(db, cache)
+	employeeController := controllers.NewEmployeeController(db, cache)
+	attendanceController := controllers.NewAttendanceController(db, cache)
+	toolsController := controllers.NewToolsController(db, cache)
+	leavesController := controllers.NewLeavesController(db, cache)
+	rolesController := controllers.NewRolesController(db, cache)
+	meeting_roomController := controllers.NewMeetingRoomController(db, cache)
+	trainingController := controllers.NewTrainingController(db, cache)
+	employee_meeting_roomController := controllers.NewEmployeeMeetingRoomController(db, cache)
+	employee_trainingController := controllers.NewEmloyeeTrainingController(db, cache)
+	parkingController := controllers.NewParkingController(db, cache)
 
 	mux := http.NewServeMux()
-	routes.CreateRoutes(mux, userController, jobController)
+	routes.CreateRoutes(mux, employeeController,attendanceController ,toolsController ,leavesController,rolesController ,meeting_roomController ,trainingController,employee_meeting_roomController ,employee_trainingController ,parkingController)
 
 	if err := http.ListenAndServe(":8000", mux); err != nil {
 		log.Fatal(err)
