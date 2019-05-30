@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"database/sql"
-	"github.com/rymccue/golang-standard-lib-rest-api/models"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/crypto"
+	"github.com/AwatefMdev/graduation_project/models"
+	"github.com/AwatefMdev/graduation_project/utils/crypto"
 )
 
 func GetUserByID(db *sql.DB, id int) (*models.User, error) {
