@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/rymccue/golang-standard-lib-rest-api/controllers"
+	"github.com/AwatefMdev/graduation_project/controllers"
 )
 
 func CreateRoutes(mux *http.ServeMux, uc *controllers.UserController, jc *controllers.JobController) {
