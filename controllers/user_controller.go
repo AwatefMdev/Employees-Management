@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rymccue/golang-standard-lib-rest-api/repositories"
-	"github.com/rymccue/golang-standard-lib-rest-api/requests"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/caching"
-	"github.com/rymccue/golang-standard-lib-rest-api/utils/crypto"
+	"github.com/AwatefMdev/graduation_project/repositories"
+	"github.com/AwatefMdev/graduation_project/requests"
+	"github.com/AwatefMdev/graduation_project/utils/caching"
+	"github.com/AwatefMdev/graduation_project/utils/crypto"
 )
 
 type UserController struct {
@@ -39,7 +39,7 @@ func (jc *UserController) Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	id, err := repositories.CreateUser(jc.DB, rr.Email, rr.Name, rr.Password)
+	id, err := repositories.CreateUser(jc.DB, rr.Email, rr.idrole, rr.idemployee ,rr.Password)
 	if err != nil {
 		log.Fatalf("Add user to database error: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -80,7 +80,7 @@ func (jc *UserController) Login(w http.ResponseWriter, r *http.Request) {
 	user, err := repositories.GetPrivateUserDetailsByEmail(jc.DB, lr.Email)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, "Invalid username or password", http.StatusBadRequest)
+			http.Error(w, "Invalid  password", http.StatusBadRequest)
 			return
 		}
 		log.Fatalf("Create User Error: %s", err)
@@ -89,7 +89,7 @@ func (jc *UserController) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	password := crypto.HashPassword(lr.Password, user.Salt)
 	if user.Password != password {
-		http.Error(w, "Invalid username or password", http.StatusBadRequest)
+		http.Error(w, "Invalid  password", http.StatusBadRequest)
 		return
 	}
 	token, err := crypto.GenerateToken()
