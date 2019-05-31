@@ -19,14 +19,14 @@ type JobController struct {
 	Cache caching.Cache
 }
 
-func NewJobController(db *sql.DB, c caching.Cache) *JobController {
-	return &JobController{
+func NewEmployeeMeetingRoomController(db *sql.DB, c caching.Cache) *EmployeeMeetingRoomController {
+	return &EmployeeMeetingRoomController{
 		DB:    db,
 		Cache: c,
 	}
 }
 
-func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeMeetingRoomController) Create(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
@@ -50,7 +50,8 @@ func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	_, err = repositories.CreateJob(jc.DB, cjr.Title, cjr.Description, userID)
+	_, err = repositories.CreateEmployeeMeetingRoom(jc.DB, cjr.DateMeeting, cjr.TimeStart, cjr.TimeEnd, cjt.InvitedEmployee, 
+							cjr.IDcreator, cjr.IDmeetingroom, employeeID)
 	if err != nil {
 		log.Fatalf("Creating a job: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -59,7 +60,7 @@ func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeMeetingRoomController) Job(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
@@ -69,7 +70,7 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
-	job, err := repositories.GetJobByID(jc.DB, jobID)
+	job, err := repositories.GetEmployeeMeetingRoomByID(jc.DB, employeemeetingroomID)
 	if err != nil {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
@@ -84,13 +85,13 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid token", http.StatusForbidden)
 		return
 	}
-	userID, err := strconv.Atoi(userIDStr)
+	employeeID, err := strconv.Atoi(employeeIDStr)
 	if err != nil {
-		log.Fatalf("Convert user id to int: %s", err)
+		log.Fatalf("Convert employee id to int: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	if userID != job.UserID {
+	if employeeID != employeemeetingroom.EmployeeID {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -102,15 +103,16 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		err = repositories.UpdateJob(jc.DB, job.ID, ujr.Title, ujr.Description)
+		err = repositories.UpdateJob(jc.DB, employeemeetingroom.ID,  ujr.DateMeeting,ujr.TimeStart, ujr.TimeEnd, ujr.InvitedEmployee, 
+							ujr.IDcreato, )
 		if err != nil {
-			log.Fatalf("Updating a job: %s", err)
+			log.Fatalf("Updating a employeeMeetingRoom : %s", err)
 			http.Error(w, "", http.StatusInternalServerError)
 			return
 		}
 	}
 	if r.Method == "DELETE" {
-		err = repositories.DeleteJob(jc.DB, job.ID)
+		err = repositories.DeleteEmployeeMeetingRoom(jc.DB, employeemeetingroom.ID)
 		if err != nil {
 			http.Error(w, "", http.StatusInternalServerError)
 			return
@@ -118,7 +120,7 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (jc *JobController) Feed(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeMeetingRoomController) Feed(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if r.Method != "GET" {
 		http.Error(w, "Not found", http.StatusNotFound)
@@ -141,11 +143,11 @@ func (jc *JobController) Feed(w http.ResponseWriter, r *http.Request) {
 			resultsPerPage = 1
 		}
 	}
-	jobs, err := repositories.GetJobs(jc.DB, page, resultsPerPage)
+	employeeMeetingRoom, err := repositories.GetEmployeeMeetingRooms(jc.DB, page, resultsPerPage)
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(jobs)
+	json.NewEncoder(w).Encode(EmployeeMeetingRooms)
 }
