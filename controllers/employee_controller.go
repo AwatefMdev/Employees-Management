@@ -14,30 +14,30 @@ import (
 	"github.com/AwatefMdev/graduation_project/utils/caching"
 )
 
-type JobController struct {
+type EmployeeController struct {
 	DB    *sql.DB
 	Cache caching.Cache
 }
 
-func NewJobController(db *sql.DB, c caching.Cache) *JobController {
-	return &JobController{
+func NewEmployeeController(db *sql.DB, c caching.Cache) *EmployeeController {
+	return &EmployeeController{
 		DB:    db,
 		Cache: c,
 	}
 }
 
-func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeController) Create(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Not found", http.StatusNotFound)
 		return
 	}
 	token := r.Header.Get("token")
-	userIDStr, err := jc.Cache.Get(fmt.Sprintf("token_%s", token))
+	employeeIDStr, err := jc.Cache.Get(fmt.Sprintf("token_%s", token))
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusForbidden)
 		return
 	}
-	userID, err := strconv.Atoi(userIDStr)
+	employeeID, err := strconv.Atoi(userIDStr)
 	if err != nil {
 		log.Fatalf("Convert user id to int: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -50,7 +50,7 @@ func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	_, err = repositories.CreateJob(jc.DB, cjr.Title, cjr.Description, userID)
+	_, err = repositories.CreateEmployee(jc.DB, cjr.Title, cjr.Description, employeeID)
 	if err != nil {
 		log.Fatalf("Creating a job: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -59,7 +59,7 @@ func (jc *JobController) Create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
@@ -69,7 +69,7 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
-	job, err := repositories.GetJobByID(jc.DB, jobID)
+	job, err := repositories.GetEmployeeByID(jc.DB, EmployeeID)
 	if err != nil {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
@@ -79,18 +79,18 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(job)
 	}
 	token := r.Header.Get("token")
-	userIDStr, err := jc.Cache.Get(fmt.Sprintf("token_%s", token))
+	employeeIDStr, err := jc.Cache.Get(fmt.Sprintf("token_%s", token))
 	if err != nil {
 		http.Error(w, "Invalid token", http.StatusForbidden)
 		return
 	}
-	userID, err := strconv.Atoi(userIDStr)
+	employeeID, err := strconv.Atoi(employeeIDStr)
 	if err != nil {
-		log.Fatalf("Convert user id to int: %s", err)
+		log.Fatalf("Convert employee id to int: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	if userID != job.UserID {
+	if eployeeID != employee.EmployeeID {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -102,7 +102,7 @@ func (jc *JobController) Job(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		err = repositories.UpdateJob(jc.DB, job.ID, ujr.Title, ujr.Description)
+		err = repositories.UpdateJob(jc.DB, employee.ID, ujr.Title, ujr.Description)
 		if err != nil {
 			log.Fatalf("Updating a job: %s", err)
 			http.Error(w, "", http.StatusInternalServerError)
