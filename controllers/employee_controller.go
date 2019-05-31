@@ -50,9 +50,10 @@ func (jc *EmployeeController) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	_, err = repositories.CreateEmployee(jc.DB, cjr.Title, cjr.Description, employeeID)
+	_, err = repositories.CreateEmployee(jc.DB, cjr.Firstname, cjr.Lastname, cjr.email, cjr.adress, cjr.gender, cjr.idleaves, 
+					     cjr.idtools, cjr.idattendance ,employeeID)
 	if err != nil {
-		log.Fatalf("Creating a job: %s", err)
+		log.Fatalf("Creating an employee: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
@@ -64,12 +65,12 @@ func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
-	jobID, err := strconv.Atoi(path.Base(r.URL.Path))
+	EmployeeID, err := strconv.Atoi(path.Base(r.URL.Path))
 	if err != nil {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
 	}
-	job, err := repositories.GetEmployeeByID(jc.DB, EmployeeID)
+	employee, err := repositories.GetEmployeeByID(jc.DB, EmployeeID)
 	if err != nil {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
@@ -90,7 +91,7 @@ func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	if eployeeID != employee.EmployeeID {
+	if employeeID != employee.EmployeeID {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -102,7 +103,8 @@ func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid request body", http.StatusBadRequest)
 			return
 		}
-		err = repositories.UpdateJob(jc.DB, employee.ID, ujr.Title, ujr.Description)
+		err = repositories.UpdateJob(jc.DB, employee.ID, jc.DB, ujr.Firstname, ujr.Lastname, ujr.email, ujr.adress, ujr.gender, ujr.idleaves, 
+					     ujr.idtools, ujr.idattendance )
 		if err != nil {
 			log.Fatalf("Updating a job: %s", err)
 			http.Error(w, "", http.StatusInternalServerError)
@@ -110,7 +112,7 @@ func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if r.Method == "DELETE" {
-		err = repositories.DeleteJob(jc.DB, job.ID)
+		err = repositories.DeleteJob(jc.DB, employee.ID)
 		if err != nil {
 			http.Error(w, "", http.StatusInternalServerError)
 			return
@@ -118,7 +120,7 @@ func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (jc *JobController) Feed(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeController) Feed(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if r.Method != "GET" {
 		http.Error(w, "Not found", http.StatusNotFound)
@@ -141,11 +143,11 @@ func (jc *JobController) Feed(w http.ResponseWriter, r *http.Request) {
 			resultsPerPage = 1
 		}
 	}
-	jobs, err := repositories.GetJobs(jc.DB, page, resultsPerPage)
+	employees, err := repositories.GetEmployees(jc.DB, page, resultsPerPage)
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
-	json.NewEncoder(w).Encode(jobs)
+	json.NewEncoder(w).Encode(employees)
 }
