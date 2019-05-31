@@ -11,12 +11,12 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type CreateJobRequest struct {
+type CreateEmployeeRequest struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
 
-type UpdateJobRequest struct {
+type UpdateEmloyeeRequest struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
