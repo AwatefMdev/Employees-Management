@@ -60,7 +60,7 @@ func (jc *EmployeeController) Create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (jc *EmployeeController) Job(w http.ResponseWriter, r *http.Request) {
+func (jc *EmployeeController)Employee(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		http.Error(w, "Not Found", http.StatusNotFound)
 		return
