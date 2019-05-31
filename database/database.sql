@@ -1,13 +1,15 @@
-create table users (
-    id serial primary key,
-    name varchar(60) not null,
+create table user (
     email varchar(150) not null,
     password char(64) not null,
-    salt char(32) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
     created_at timestamp default current_timestamp
 );
 
-create table jobs (
+create table Employee (
     id serial primary key,
     title varchar(150) not null,
     description text not null,
