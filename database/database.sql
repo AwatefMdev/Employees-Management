@@ -9,7 +9,7 @@ create table user (
     created_at timestamp default current_timestamp
 );
 
-create table Employee (
+create table employee (
     id serial primary key,
     firstname varchar(150) not null,
     lastname varchar(150) not null,
@@ -24,4 +24,82 @@ create table Employee (
     created_at timestamp default current_timestamp
 );
 
-create Table 
+create table tools(
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+create table attendance (
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+
+create table leaves(
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+create table meetingroom (
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+
+create table training (
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+
+create table employeemeetingroom(
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+
+create table employeemeetingroom(
+    email varchar(150) not null,
+    password char(64) not null,
+    id_employee integer (50),
+    constraint id_employee
+    foreign key (id) 
+     REFERENCES employee (id),
+     id_role integer REFERENCES role (id),
+    created_at timestamp default current_timestamp
+);
+
+
+
+
+
