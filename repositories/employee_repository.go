@@ -4,41 +4,55 @@ import (
 	"database/sql"
 	"github.com/AwatefMdev/graduation_project/models"
 
-func CreateJob(db *sql.DB, title, description string, userID int) (int, error) {
+func CreateEmployee(db *sql.DB, firstname, lastname,email,adress,gender string, idleaves,idtools,idattendance int) (int, error) {
 	const query = `
-		insert into jobs (
-			title,
-			description,
-			user_id
+		insert into employees (
+			firstname,
+			lastname,
+			email,
+			gender,
+			idleaves,
+			idtools,
+			idattendance
+			
 		) values (
 			$1,
 			$2,
-			$3
+			$3,
+			$4,
+			$5,
+			$6,
+			$7
 		) returning id
 	`
 	var id int
-	err := db.QueryRow(query, title, description, userID).Scan(&id)
+	err := db.QueryRow(query, firstname, lastname,email,adress,gender, idleaves,idtools,idattendance).Scan(&id)
 	return id, err
 }
 
-func UpdateJob(db *sql.DB, jobID int, title, description string) error {
+func UpdateJob(db *sql.DB, idemployee int, firstname, lastname,email,adress,gender string) error {
 	const query = `
-		update jobs set
-			title = $1,
-			description = $2
-		where id = $3
+		update employees set
+			firstname=$1
+			lastname=$2
+			email=$3
+			gender=$4
+			idleaves=$5
+			idtools=$6
+			idattendance=$7
+		where id = $8
 	`
-	_, err := db.Exec(query, title, description, jobID)
+	_, err := db.Exec(query, firstname, lastname,email,adress,gender, idemployee)
 	return err
 }
 
-func DeleteJob(db *sql.DB, id int) error {
+func DeleteEmployee(db *sql.DB, id int) error {
 	const query = `delete from jobs where id = $1`
 	_, err := db.Exec(query, id)
 	return err
 }
 
-func GetJobByID(db *sql.DB, id int) (*models.Job, error) {
+func GetEmployeeByID(db *sql.DB, id int) (*models.Job, error) {
 	const query = `
 		select
 			id,
@@ -55,7 +69,7 @@ func GetJobByID(db *sql.DB, id int) (*models.Job, error) {
 	return &job, err
 }
 
-func GetJobs(db *sql.DB, page, resultsPerPage int) ([]*models.Job, error) {
+func GetEmployee(db *sql.DB, page, resultsPerPage int) ([]*models.Job, error) {
 	const query = `
 		select
 			id,
