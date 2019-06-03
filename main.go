@@ -8,7 +8,7 @@ import (
 	"github.com/AwatefMdev/graduation_project/controllers"
 	"github.com/AwatefMdev/graduation_project/routes"
 	"github.com/AwatefMdev/graduation_project/utils/caching"
-	"github.com/rymccue/AwatefMdev/graduation_project/utils/database"
+	"github.com/AwatefMdev/graduation_project/utils/database"
 )
 
 func main() {
