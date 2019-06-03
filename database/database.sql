@@ -11,8 +11,17 @@ create table user (
 
 create table Employee (
     id serial primary key,
-    title varchar(150) not null,
+    firstname varchar(150) not null,
+    lastname varchar(150) not null,
+    email varchar(150) not null,
+    adress varchar(150) not null,
+    gender varchar(150) not null,
+    mobilenumber INT (50), 
     description text not null,
-    user_id int not null,
+    idtools integer REFERENCES tools (id),
+    idattendance integer REFERENCES attendance (id),
+    idleaves integer REEFERENCES leaves (id),
     created_at timestamp default current_timestamp
 );
+
+create Table 
