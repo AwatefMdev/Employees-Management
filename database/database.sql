@@ -1,3 +1,19 @@
+ALTER TABLE employee 
+ADD CONSTRAINT leavesfkey FOREIGN KEY (idleaves) REFERENCES leaves (id);
+ALTER TABLE employee 
+ADD CONSTRAINT toolsfkey FOREIGN KEY (idtools) REFERENCES tools(id);
+ALTER TABLE employee 
+ADD CONSTRAINT attendancefkey FOREIGN KEY (idattendance) REFERENCES  attendance(id);
+ALTER TABLE employee_training 
+ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE parking
+ADD CONSTRAINT employeeparkingfkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE role
+ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE employee_training 
+ADD CONSTRAINT trainingfkey FOREIGN KEY (idtraining) REFERENCES training(id);
+
+
 
 
 create table employee (
@@ -5,13 +21,13 @@ create table employee (
     firstname varchar(150) not null,
     lastname varchar(150) not null,
     email varchar(150) not null,
-    adress varchar(150) not null,
-    gender varchar(150) not null,
+    adress varchar(150) ,
+    gender varchar(150) ,
     mobilenumber integer , 
-    description text not null,
-    idtools integer REFERENCES tools (id),
-    idattendance integer REFERENCES attendance (id),
-    idleaves integer REEFERENCES leaves (id),
+    description text,
+    idtools integer,
+    idattendance integer,
+     idleaves integer,
     created_at timestamp default current_timestamp
 );
 
