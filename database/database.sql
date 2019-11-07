@@ -7,7 +7,7 @@ create table employee (
     email varchar(150) not null,
     adress varchar(150) not null,
     gender varchar(150) not null,
-    mobilenumber INT (50), 
+    mobilenumber integer , 
     description text not null,
     idtools integer REFERENCES tools (id),
     idattendance integer REFERENCES attendance (id),
@@ -16,81 +16,71 @@ create table employee (
 );
 
 create table tools(
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+   id serial primary key,
+    name varchar(45),
+    quantity int,
+    date Date,  
     created_at timestamp default current_timestamp
 );
 create table attendance (
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+    id serial primary key,
+   timecheckin time,
+   timecheckout time,
     created_at timestamp default current_timestamp
 );
 
 create table leaves(
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+    id serial primary key,
+  type varchar(255),
+    starttime time,
+   endtime time ,
+   reason varchar (255),
     created_at timestamp default current_timestamp
 );
 create table meetingroom (
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+    id serial primary key,
+   capacity integer,
+    description varchar(255),
     created_at timestamp default current_timestamp
 );
 
 create table training (
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+    id serial primary key,
+    type varchar(45),
+    date Date,
+    duration int,
+    link varchar (255),
     created_at timestamp default current_timestamp
 );
 
 create table employeemeetingroom(
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+    id serial primary key,
+   date Date,
+    employee_invited varchar (255),
+    timeend time,
+    timestart time,
     created_at timestamp default current_timestamp
 );
 
-create table employeemeetingroom(
-    email varchar(150) not null,
-    password char(64) not null,
-    id_employee integer (50),
-    constraint id_employee
-    foreign key (id) 
-     REFERENCES employee (id),
-     id_role integer REFERENCES role (id),
+create table parking(
+   id serial primary key,
+   capacity int ,
+    date date,
+    newcar varchar (255)
+    created_at timestamp default current_timestamp
+);
+
+create table role(
+   id serial primary key, 
+    label varchar (255),
     created_at timestamp default current_timestamp
 );
 
 
+create table employee_training(
+   id serial primary key, 
+    created_at timestamp default current_timestamp
+);
 
 
 
