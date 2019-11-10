@@ -1,21 +1,3 @@
-ALTER TABLE employee 
-ADD CONSTRAINT leavesfkey FOREIGN KEY (idleaves) REFERENCES leaves (id);
-ALTER TABLE employee 
-ADD CONSTRAINT toolsfkey FOREIGN KEY (idtools) REFERENCES tools(id);
-ALTER TABLE employee 
-ADD CONSTRAINT attendancefkey FOREIGN KEY (idattendance) REFERENCES  attendance(id);
-ALTER TABLE employee_training 
-ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
-ALTER TABLE parking
-ADD CONSTRAINT employeeparkingfkey FOREIGN KEY (idemployee) REFERENCES employee(id);
-ALTER TABLE role
-ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
-ALTER TABLE employee_training 
-ADD CONSTRAINT trainingfkey FOREIGN KEY (idtraining) REFERENCES training(id);
-
-
-
-
 create table employee (
     id serial primary key,
     firstname varchar(150) not null,
@@ -98,5 +80,19 @@ create table employee_training(
     created_at timestamp default current_timestamp
 );
 
+ALTER TABLE employee 
+ADD CONSTRAINT leavesfkey FOREIGN KEY (idleaves) REFERENCES leaves (id);
+ALTER TABLE employee 
+ADD CONSTRAINT toolsfkey FOREIGN KEY (idtools) REFERENCES tools(id);
+ALTER TABLE employee 
+ADD CONSTRAINT attendancefkey FOREIGN KEY (idattendance) REFERENCES  attendance(id);
+ALTER TABLE employee_training 
+ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE parking
+ADD CONSTRAINT employeeparkingfkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE role
+ADD CONSTRAINT employeefkey FOREIGN KEY (idemployee) REFERENCES employee(id);
+ALTER TABLE employee_training 
+ADD CONSTRAINT trainingfkey FOREIGN KEY (idtraining) REFERENCES training(id);
 
 
